@@ -4,5 +4,11 @@
     "port": 5432,
     "username": "postgres",
     "password": "docker",
-    "database": "barbearia_node"
+    "database": "barbearia_node",
+    "migrations": [
+        "./src/infrastructure/database/migrations/*.ts"
+    ],
+    "cli": {
+        "migrationsDir": "./src/infrastructure/database/migrations" 
+    }
 }
