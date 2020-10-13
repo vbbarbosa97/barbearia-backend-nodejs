@@ -6,6 +6,7 @@ import './infrastructure/database';
 
 //Rotas
 import Appointments from './application/routes/appointments';
+import Users from './application/routes/users';
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/appointments', Appointments);
+app.use('/api/users', Users);
 
 app.listen(3333, () => {
 	console.log('Server iniciado na porta 3333!');

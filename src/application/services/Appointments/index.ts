@@ -17,11 +17,11 @@ class AppointmentService {
 		const findAppointmentInSameDate = await appointmentRepository.findByDate(appointmentDate);
 
 		if (findAppointmentInSameDate) {
-			throw Error('Ja existe um agendamento nesta data.');
+			throw new Error('Ja existe um agendamento nesta data.');
 		}
 
 		const appointment = appointmentRepository.create({
-			provider: provider,
+			provider_id: provider,
 			date: appointmentDate,
 		});
 
