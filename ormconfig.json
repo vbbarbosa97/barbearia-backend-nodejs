@@ -5,6 +5,9 @@
     "username": "postgres",
     "password": "docker",
     "database": "barbearia_node",
+    "entities": [
+        "./src/domain/entities/*.ts"
+    ],
     "migrations": [
         "./src/infrastructure/database/migrations/*.ts"
     ],

@@ -1,15 +1,20 @@
 import { getCustomRepository } from 'typeorm';
 import { startOfHour } from 'date-fns';
 import { Appointment } from '../../../domain/entities/Appointment';
-import { ICriarAppointment } from '../../../domain/interfaces/IAppointments';
 import { AppointmentRepository } from '../../../infrastructure/repositories/AppointmentRepository';
 
-export class AppointmentService {
-	public async create({ date, provider }: ICriarAppointment): Promise<Appointment> {
+class AppointmentService {
+	public async GetAll(): Promise<Appointment[]> {
+		const appointmentRepository = getCustomRepository(AppointmentRepository);
+		const appointments = await appointmentRepository.find();
+		return appointments;
+	}
+
+	public async Create(date: Date, provider: string): Promise<Appointment> {
 		const appointmentRepository = getCustomRepository(AppointmentRepository);
 		const appointmentDate = startOfHour(date);
 
-		const findAppointmentInSameDate = appointmentRepository.findByDate(appointmentDate);
+		const findAppointmentInSameDate = await appointmentRepository.findByDate(appointmentDate);
 
 		if (findAppointmentInSameDate) {
 			throw Error('Ja existe um agendamento nesta data.');
@@ -24,3 +29,5 @@ export class AppointmentService {
 		return appointment;
 	}
 }
+
+export default new AppointmentService();
