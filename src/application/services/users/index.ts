@@ -1,15 +1,22 @@
 import { getCustomRepository } from 'typeorm';
+import { hash } from 'bcryptjs';
 import { User } from '../../../domain/entities/User';
+import { UserViewModel } from '../../../domain/models/UserViewModel';
 import { UserRepository } from '../../../infrastructure/repositories/UserRepository';
 
 class UserService {
-	public async GetAll(): Promise<User[]> {
+	public async GetAll(): Promise<UserViewModel[]> {
 		const userRepository = getCustomRepository(UserRepository);
 		const users = await userRepository.find();
-		return users;
+
+		const userModel = users.map((user) => {
+			return new UserViewModel(user);
+		});
+
+		return userModel;
 	}
 
-	public async Create(nome: string, email: string, password: string): Promise<User> {
+	public async Create(nome: string, email: string, password: string): Promise<UserViewModel> {
 		const userRepository = getCustomRepository(UserRepository);
 
 		const checkUserExist = await userRepository.findOne({
@@ -20,14 +27,19 @@ class UserService {
 			throw new Error('Email ja cadastrado.');
 		}
 
+		const hashedPassword = await hash(password, 8);
+
 		const user = userRepository.create({
 			name: nome,
 			email: email,
-			password: password,
+			password: hashedPassword,
 		});
 
 		await userRepository.save(user);
-		return user;
+
+		const userModel = new UserViewModel(user);
+
+		return userModel;
 	}
 }
 
