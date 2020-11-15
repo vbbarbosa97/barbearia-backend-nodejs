@@ -2,6 +2,8 @@ import { hash } from 'bcryptjs';
 import { getCustomRepository } from 'typeorm';
 import { UserViewModel } from '../../../domain/models/UserViewModel';
 import { UserRepository } from '../../../infrastructure/repositories/UserRepository';
+import CustomError from '../../../shared/customError';
+import { USER_ALREADY_EXISTS } from '../../../shared/messages';
 
 class UserService {
 	public async GetAll(): Promise<UserViewModel[]> {
@@ -14,8 +16,8 @@ class UserService {
 			});
 
 			return userModel;
-		} catch (error) {
-			throw error;
+		} catch (error: any) {
+			throw new CustomError(error.message, 422);
 		}
 	}
 
@@ -28,7 +30,7 @@ class UserService {
 			});
 
 			if (checkUserExist) {
-				throw new Error('Email ja cadastrado.');
+				throw new CustomError(USER_ALREADY_EXISTS, 422);
 			}
 
 			const hashedPassword = await hash(password, 8);
@@ -44,8 +46,8 @@ class UserService {
 			const userModel = new UserViewModel(user);
 
 			return userModel;
-		} catch (error) {
-			throw error;
+		} catch (error: any) {
+			throw new CustomError(error.message, 422);
 		}
 	}
 }

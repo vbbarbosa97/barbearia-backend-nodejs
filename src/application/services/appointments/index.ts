@@ -1,8 +1,9 @@
-import { getCustomRepository } from 'typeorm';
 import { startOfHour } from 'date-fns';
-import { Appointment } from '../../../domain/entities/Appointment';
-import { AppointmentRepository } from '../../../infrastructure/repositories/AppointmentRepository';
+import { getCustomRepository } from 'typeorm';
 import { AppointmentViewModel } from '../../../domain/models/AppointmentViewModel';
+import { AppointmentRepository } from '../../../infrastructure/repositories/AppointmentRepository';
+import CustomError from '../../../shared/customError';
+import { APPOINTMENT_ALREDY_EXIST } from '../../../shared/messages';
 
 class AppointmentService {
 	public async GetAll(): Promise<AppointmentViewModel[]> {
@@ -15,8 +16,8 @@ class AppointmentService {
 			});
 
 			return appointmentsModel;
-		} catch (error) {
-			throw error;
+		} catch (error: any) {
+			throw new CustomError(error.message, 422);
 		}
 	}
 
@@ -29,7 +30,7 @@ class AppointmentService {
 			const findAppointmentInSameDate = await appointmentRepository.findByDate(appointmentDate);
 
 			if (findAppointmentInSameDate) {
-				throw new Error('Ja existe um agendamento nesta data.');
+				throw new CustomError(APPOINTMENT_ALREDY_EXIST, 422);
 			}
 
 			const appointment = appointmentRepository.create({
@@ -42,8 +43,8 @@ class AppointmentService {
 			const appointmentModel = new AppointmentViewModel(appointment);
 
 			return appointmentModel;
-		} catch (error) {
-			throw error;
+		} catch (error: any) {
+			throw new CustomError(error.message, 422);
 		}
 	}
 }
