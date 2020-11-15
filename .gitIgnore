@@ -1,1 +1,4 @@
 node_modules/
+
+src/shared/tmp/*
+!src/shared/tmp/.gitkeep

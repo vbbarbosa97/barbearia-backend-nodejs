@@ -1,9 +1,12 @@
 import { hash } from 'bcryptjs';
+import fs from 'fs';
+import path from 'path';
 import { getCustomRepository } from 'typeorm';
 import { UserViewModel } from '../../../domain/models/UserViewModel';
 import { UserRepository } from '../../../infrastructure/repositories/UserRepository';
+import uploadConfig from '../../../shared/config/upload';
+import { USER_ALREADY_EXISTS, USER_NOT_FOUND } from '../../../shared/constants/messages';
 import CustomError from '../../../shared/utils/customError';
-import { USER_ALREADY_EXISTS } from '../../../shared/constants/messages';
 
 class UserService {
 	public async GetAll(): Promise<UserViewModel[]> {
@@ -51,9 +54,31 @@ class UserService {
 		}
 	}
 
-	public async UpdateAvatar(): Promise<any> {
+	public async UpdateAvatar(userId: string, filename: string): Promise<any> {
 		try {
 			const userRepository = getCustomRepository(UserRepository);
+			const user = await userRepository.findOne(userId);
+
+			if (user === undefined) {
+				throw new CustomError(USER_NOT_FOUND, 422);
+			}
+
+			if (user.avatar !== null) {
+				const userAvatarFilePath = path.join(uploadConfig.directory, user.avatar);
+
+				//o fs me permite utilizar as funções do sistema
+				//o stat traz o status de um arquivo, mas apenas se ele existir
+				const userAvatarFileExist = await fs.promises.stat(userAvatarFilePath);
+
+				if (userAvatarFileExist) {
+					//o unlink deleta o arquivo
+					await fs.promises.unlink(userAvatarFilePath);
+				}
+			}
+
+			user.avatar = filename;
+			await userRepository.save(user);
+
 			return true;
 		} catch (error: any) {
 			throw new CustomError(error.message, 422);

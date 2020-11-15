@@ -79,6 +79,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/multer@^1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@types/multer/-/multer-1.4.4.tgz#bb5d9abc410da82726ceca74008bb81813349a88"
+  integrity sha512-wdfkiKBBEMTODNbuF3J+qDDSqJxt50yB9pgDiTcFew7f97Gcc7/sM4HR66ofGgpJPOALWOqKAch4gPyqEXSkeQ==
+  dependencies:
+    "@types/express" "*"
+
 "@types/node@*":
   version "14.11.8"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.11.8.tgz#fe2012f2355e4ce08bca44aeb3abbb21cf88d33f"

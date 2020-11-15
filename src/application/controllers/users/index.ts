@@ -17,9 +17,10 @@ class UserController {
 	}
 
 	async UpdateAvatar(req: Request, res: Response, next: NextFunction) {
-		// const { nome, email, password } = req.body;
+		const { userId } = req.params;
+		const { filename } = req.file;
 
-		UserService.UpdateAvatar()
+		UserService.UpdateAvatar(userId, filename)
 			.then((payload) => res.status(200).json({ payload }))
 			.catch((err) => next(err));
 	}
