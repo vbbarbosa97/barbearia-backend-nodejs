@@ -12,15 +12,11 @@ export async function authMiddleware(req: Request, res: Response, next: NextFunc
 			throw new CustomError(TOKEN_IS_MISSING, 422);
 		}
 		const [, token] = authHeader.split(' ');
-		const user = await decodeToken(token);
+		await decodeToken(token);
 
-		if (user !== null) {
-			return next();
-		}
-
-		throw new CustomError(INVALID_TOKEN, 498);
+		return next();
 	} catch (e) {
-		return next(e);
+		return next(new CustomError(INVALID_TOKEN, 498));
 	}
 }
 
