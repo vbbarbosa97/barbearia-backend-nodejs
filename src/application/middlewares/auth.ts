@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import unless from 'express-unless';
-import CustomError from '../../shared/customError';
-import { decodeToken } from '../../shared/functions';
-import { INVALID_TOKEN, TOKEN_IS_MISSING } from '../../shared/messages';
+import CustomError from '../../shared/utils/customError';
+import { decodeToken } from '../../shared/utils/functions';
+import { INVALID_TOKEN, TOKEN_IS_MISSING } from '../../shared/constants/messages';
 
 export async function authMiddleware(req: Request, res: Response, next: NextFunction) {
 	try {

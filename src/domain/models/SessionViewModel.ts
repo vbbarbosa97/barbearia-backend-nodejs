@@ -1,5 +1,5 @@
 import { UserViewModel } from './UserViewModel';
-import { generateToken } from '../../shared/functions';
+import { generateToken } from '../../shared/utils/functions';
 
 interface ISessionViewModel {
 	user: UserViewModel;

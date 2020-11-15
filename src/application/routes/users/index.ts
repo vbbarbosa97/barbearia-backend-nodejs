@@ -6,4 +6,6 @@ router.get('', UserController.GetAll);
 
 router.post('', UserController.Create);
 
+router.put('/avatar', UserController.UpdateAvatar);
+
 export default router;

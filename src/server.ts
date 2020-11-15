@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import './infrastructure/database';
 
 //Config
-import * as handlers from './shared/handlers';
+import * as handlers from './shared/utils/handlers';
 
 //Middlewares
 import { authMiddleware } from './application/middlewares/auth';
@@ -28,8 +28,8 @@ app.use(cors());
 
 app.use(authMiddleware.unless(unless));
 
-app.use('/api/appointments', Appointments);
-app.use('/api/users', Users);
+app.use('/api/appointment', Appointments);
+app.use('/api/user', Users);
 app.use('/api/session', Auth);
 
 app.use(handlers.validationError);

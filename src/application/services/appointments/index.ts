@@ -2,8 +2,8 @@ import { startOfHour } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
 import { AppointmentViewModel } from '../../../domain/models/AppointmentViewModel';
 import { AppointmentRepository } from '../../../infrastructure/repositories/AppointmentRepository';
-import CustomError from '../../../shared/customError';
-import { APPOINTMENT_ALREDY_EXIST } from '../../../shared/messages';
+import CustomError from '../../../shared/utils/customError';
+import { APPOINTMENT_ALREDY_EXIST } from '../../../shared/constants/messages';
 
 class AppointmentService {
 	public async GetAll(): Promise<AppointmentViewModel[]> {

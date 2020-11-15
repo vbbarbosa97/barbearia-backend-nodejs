@@ -2,8 +2,8 @@ import { hash } from 'bcryptjs';
 import { getCustomRepository } from 'typeorm';
 import { UserViewModel } from '../../../domain/models/UserViewModel';
 import { UserRepository } from '../../../infrastructure/repositories/UserRepository';
-import CustomError from '../../../shared/customError';
-import { USER_ALREADY_EXISTS } from '../../../shared/messages';
+import CustomError from '../../../shared/utils/customError';
+import { USER_ALREADY_EXISTS } from '../../../shared/constants/messages';
 
 class UserService {
 	public async GetAll(): Promise<UserViewModel[]> {
@@ -46,6 +46,15 @@ class UserService {
 			const userModel = new UserViewModel(user);
 
 			return userModel;
+		} catch (error: any) {
+			throw new CustomError(error.message, 422);
+		}
+	}
+
+	public async UpdateAvatar(): Promise<any> {
+		try {
+			const userRepository = getCustomRepository(UserRepository);
+			return true;
 		} catch (error: any) {
 			throw new CustomError(error.message, 422);
 		}

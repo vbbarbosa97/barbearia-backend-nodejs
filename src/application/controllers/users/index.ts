@@ -15,6 +15,14 @@ class UserController {
 			.then((payload) => res.status(200).json({ payload }))
 			.catch((err) => next(err));
 	}
+
+	async UpdateAvatar(req: Request, res: Response, next: NextFunction) {
+		// const { nome, email, password } = req.body;
+
+		UserService.UpdateAvatar()
+			.then((payload) => res.status(200).json({ payload }))
+			.catch((err) => next(err));
+	}
 }
 
 export default new UserController();

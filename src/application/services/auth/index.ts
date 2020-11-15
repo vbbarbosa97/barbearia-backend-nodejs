@@ -3,8 +3,8 @@ import { getCustomRepository } from 'typeorm';
 import { SessionViewModel } from '../../../domain/models/SessionViewModel';
 import { UserViewModel } from '../../../domain/models/UserViewModel';
 import { UserRepository } from '../../../infrastructure/repositories/UserRepository';
-import CustomError from '../../../shared/customError';
-import { INCORRECT_PASSWORD, USER_NOT_FOUND } from '../../../shared/messages';
+import CustomError from '../../../shared/utils/customError';
+import { INCORRECT_PASSWORD, USER_NOT_FOUND } from '../../../shared/constants/messages';
 
 class SessionService {
 	public async Create(email: string, password: string): Promise<SessionViewModel> {

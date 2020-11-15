@@ -1,6 +1,6 @@
 // @ts-ignore
 import { ValidationError } from 'express-validation';
-import { VALIDATION_ERROR, INTERNAL_ERROR } from './messages';
+import { VALIDATION_ERROR, INTERNAL_ERROR } from '../constants/messages';
 import { Request, Response, NextFunction } from 'express';
 
 export function validationError(
