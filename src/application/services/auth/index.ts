@@ -7,7 +7,12 @@ import CustomError from '../../../shared/utils/customError';
 import { INCORRECT_PASSWORD, USER_NOT_FOUND } from '../../../shared/constants/messages';
 
 class SessionService {
-	public async Create(email: string, password: string): Promise<SessionViewModel> {
+	public async Create(
+		email: string,
+		password: string,
+		hostname: string,
+		protocol: string
+	): Promise<SessionViewModel> {
 		try {
 			const userRepository = getCustomRepository(UserRepository);
 
@@ -24,6 +29,11 @@ class SessionService {
 			}
 
 			const userViewModel = new UserViewModel(response);
+
+			const avatarUser =
+				response.avatar !== null ? `${protocol}://${hostname}:3333/files/${response.avatar}` : null;
+
+			userViewModel.addAvatar(avatarUser);
 
 			const session = new SessionViewModel({ user: userViewModel });
 

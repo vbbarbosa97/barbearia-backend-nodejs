@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
-import { UserViewModel } from '../../domain/models/UserViewModel';
+import { IUserViewModel } from '../../domain/models/UserViewModel';
 import { JwtConfig } from '../constants/values';
 
-export function generateToken(user: UserViewModel) {
-	return jwt.sign(user, JwtConfig.tokenKey);
+export function generateToken(userId: string) {
+	return jwt.sign({ userId }, 'JwtConfig.tokenKey');
 }
 
 export async function decodeToken(token: string) {

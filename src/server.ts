@@ -7,6 +7,7 @@ import './infrastructure/database';
 
 //Config
 import * as handlers from './shared/utils/handlers';
+import uploadConfig from './shared/config/upload';
 
 //Middlewares
 import { authMiddleware } from './application/middlewares/auth';
@@ -18,7 +19,7 @@ import Auth from './application/routes/auth';
 
 const app = express();
 const unless = {
-	path: [{ url: /^\/api\/session/ }],
+	path: [{ url: /^\/api\/session/ }, { url: /^\/files/ }],
 };
 
 app.use(morgan('dev'));
@@ -31,6 +32,7 @@ app.use(authMiddleware.unless(unless));
 app.use('/api/appointment', Appointments);
 app.use('/api/user', Users);
 app.use('/api/session', Auth);
+app.use('/files', express.static(uploadConfig.directory));
 
 app.use(handlers.validationError);
 app.use(handlers.internalError);

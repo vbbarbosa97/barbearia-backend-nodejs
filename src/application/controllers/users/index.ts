@@ -3,7 +3,9 @@ import UserService from '../../services/users';
 
 class UserController {
 	async GetAll(req: Request, res: Response, next: NextFunction) {
-		UserService.GetAll()
+		const { hostname, protocol } = req;
+
+		UserService.GetAll(hostname, protocol)
 			.then((payload) => res.status(200).json({ payload }))
 			.catch((err) => next(err));
 	}

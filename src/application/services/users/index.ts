@@ -2,19 +2,21 @@ import { hash } from 'bcryptjs';
 import fs from 'fs';
 import path from 'path';
 import { getCustomRepository } from 'typeorm';
-import { UserViewModel } from '../../../domain/models/UserViewModel';
+import { IUserViewModel, UserViewModel } from '../../../domain/models/UserViewModel';
 import { UserRepository } from '../../../infrastructure/repositories/UserRepository';
 import uploadConfig from '../../../shared/config/upload';
 import { USER_ALREADY_EXISTS, USER_NOT_FOUND } from '../../../shared/constants/messages';
 import CustomError from '../../../shared/utils/customError';
 
 class UserService {
-	public async GetAll(): Promise<UserViewModel[]> {
+	public async GetAll(hostname: string, protocol: string): Promise<UserViewModel[]> {
 		try {
 			const userRepository = getCustomRepository(UserRepository);
 			const users = await userRepository.find();
 
-			const userModel = users.map((user) => {
+			const userModel = users.map((user: IUserViewModel) => {
+				user.avatar =
+					user.avatar !== null ? `${protocol}://${hostname}:3333/files/${user.avatar}` : null;
 				return new UserViewModel(user);
 			});
 
@@ -54,7 +56,7 @@ class UserService {
 		}
 	}
 
-	public async UpdateAvatar(userId: string, filename: string): Promise<any> {
+	public async UpdateAvatar(userId: string, filename: string): Promise<boolean> {
 		try {
 			const userRepository = getCustomRepository(UserRepository);
 			const user = await userRepository.findOne(userId);
