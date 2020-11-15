@@ -43,6 +43,13 @@
     "@types/qs" "*"
     "@types/range-parser" "*"
 
+"@types/express-unless@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@types/express-unless/-/express-unless-0.5.1.tgz#4f440b905e42bbf53382b8207bc337dc5ff9fd1f"
+  integrity sha512-5fuvg7C69lemNgl0+v+CUxDYWVPSfXHhJPst4yTLcqi4zKJpORCxnDrnnilk3k0DTq/WrAUdvXFs01+vUqUZHw==
+  dependencies:
+    "@types/express" "*"
+
 "@types/express@*", "@types/express@^4.17.8":
   version "4.17.8"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.8.tgz#3df4293293317e61c60137d273a2e96cd8d5f27a"
@@ -769,6 +776,11 @@ expand-brackets@^2.1.4:
     regex-not "^1.0.0"
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
+
+express-unless@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/express-unless/-/express-unless-0.5.0.tgz#c2ece477f4155089143dbb869d07c57c5eb6ab9b"
+  integrity sha1-wuzkd/QVUIkUPbuGnQfFfF62q5s=
 
 express-validation@1.0.2:
   version "1.0.2"

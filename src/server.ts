@@ -8,17 +8,25 @@ import './infrastructure/database';
 //Config
 import * as handlers from './shared/handlers';
 
+//Middlewares
+import { authMiddleware } from './application/middlewares/auth';
+
 //Rotas
 import Appointments from './application/routes/appointments';
 import Users from './application/routes/users';
 import Auth from './application/routes/auth';
 
 const app = express();
+const unless = {
+	path: [{ url: /^\/api\/session/ }],
+};
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
+
+app.use(authMiddleware.unless(unless));
 
 app.use('/api/appointments', Appointments);
 app.use('/api/users', Users);

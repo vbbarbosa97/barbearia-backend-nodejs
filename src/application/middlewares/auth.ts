@@ -1,20 +1,27 @@
-// export async function authMiddleware(req: Request, res: Response, next: NextFunction) {
-// 	try {
-// 		const authHeader = req.body.token || req.headers.authorization;
+import { NextFunction, Request, Response } from 'express';
+import unless from 'express-unless';
+import CustomError from '../../shared/customError';
+import { decodeToken } from '../../shared/functions';
+import { INVALID_TOKEN, TOKEN_IS_MISSING } from '../../shared/messages';
 
-// 		if (!authHeader) {
-// 			throw new CustomError(TOKEN_IS_MISSING, 422);
-// 		}
-// 		const [, token] = authHeader.split(' ');
-// 		const userId = await decodeToken(token);
+export async function authMiddleware(req: Request, res: Response, next: NextFunction) {
+	try {
+		const authHeader = req.body.token || req.headers.authorization;
 
-// 		if (userId !== null) {
-// 			req.userId = userId.data;
-// 			return next();
-// 		}
+		if (!authHeader) {
+			throw new CustomError(TOKEN_IS_MISSING, 422);
+		}
+		const [, token] = authHeader.split(' ');
+		const user = await decodeToken(token);
 
-// 		throw new CustomError(INVALID_TOKEN, 498);
-// 	} catch (e) {
-// 		return next(e);
-// 	}
-// }
+		if (user !== null) {
+			return next();
+		}
+
+		throw new CustomError(INVALID_TOKEN, 498);
+	} catch (e) {
+		return next(e);
+	}
+}
+
+authMiddleware.unless = unless;
