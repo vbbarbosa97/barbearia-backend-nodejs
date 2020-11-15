@@ -2,8 +2,8 @@ import { Router } from 'express';
 import AppointmentController from '../../controllers/appointments';
 const router = Router();
 
-router.get('/obter', AppointmentController.GetAll);
+router.get('', AppointmentController.GetAll);
 
-router.post('/criar', AppointmentController.Create);
+router.post('', AppointmentController.Create);
 
 export default router;

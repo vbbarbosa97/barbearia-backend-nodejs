@@ -6,37 +6,45 @@ import { AppointmentViewModel } from '../../../domain/models/AppointmentViewMode
 
 class AppointmentService {
 	public async GetAll(): Promise<AppointmentViewModel[]> {
-		const appointmentRepository = getCustomRepository(AppointmentRepository);
-		const appointments = await appointmentRepository.find({ relations: ['provider'] });
+		try {
+			const appointmentRepository = getCustomRepository(AppointmentRepository);
+			const appointments = await appointmentRepository.find({ relations: ['provider'] });
 
-		const appointmentsModel = appointments.map((item) => {
-			return new AppointmentViewModel(item);
-		});
+			const appointmentsModel = appointments.map((item) => {
+				return new AppointmentViewModel(item);
+			});
 
-		return appointmentsModel;
+			return appointmentsModel;
+		} catch (error) {
+			throw error;
+		}
 	}
 
 	public async Create(date: Date, provider_id: string): Promise<AppointmentViewModel> {
-		const appointmentRepository = getCustomRepository(AppointmentRepository);
+		try {
+			const appointmentRepository = getCustomRepository(AppointmentRepository);
 
-		const appointmentDate = startOfHour(date);
+			const appointmentDate = startOfHour(date);
 
-		const findAppointmentInSameDate = await appointmentRepository.findByDate(appointmentDate);
+			const findAppointmentInSameDate = await appointmentRepository.findByDate(appointmentDate);
 
-		if (findAppointmentInSameDate) {
-			throw new Error('Ja existe um agendamento nesta data.');
+			if (findAppointmentInSameDate) {
+				throw new Error('Ja existe um agendamento nesta data.');
+			}
+
+			const appointment = appointmentRepository.create({
+				provider_id: provider_id,
+				date: appointmentDate,
+			});
+
+			await appointmentRepository.save(appointment);
+
+			const appointmentModel = new AppointmentViewModel(appointment);
+
+			return appointmentModel;
+		} catch (error) {
+			throw error;
 		}
-
-		const appointment = appointmentRepository.create({
-			provider_id: provider_id,
-			date: appointmentDate,
-		});
-
-		await appointmentRepository.save(appointment);
-
-		const appointmentModel = new AppointmentViewModel(appointment);
-
-		return appointmentModel;
 	}
 }
 
